@@ -40,6 +40,17 @@
         
         .correct-answer { color: #e74c3c; font-size: 0.9em; display: none; margin-top: 5px; font-weight: bold; }
         .feedback { text-align: center; font-size: 1.2em; font-weight: bold; color: #2980b9; margin-top: 10px; display: none; }
+
+        /* 결과 화면 스타일 */
+        #result-screen { background: #fff; padding: 40px; border-radius: 12px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-top: 30px; display: none; border: 4px solid #f1c40f; }
+        #result-screen h2 { color: #2c3e50; font-size: 2em; margin-bottom: 10px; }
+        .certificate-info { font-size: 1.3em; margin: 20px 0; color: #34495e; }
+        .score-table { width: 100%; max-width: 500px; margin: 0 auto; border-collapse: collapse; }
+        .score-table th, .score-table td { padding: 12px; border: 1px solid #ddd; font-size: 1.2em; }
+        .score-table th { background-color: #3498db; color: white; }
+        .score-table td { background-color: #f9f9f9; font-weight: bold; }
+        .total-score { font-size: 1.5em; color: #e74c3c; margin-top: 20px; font-weight: bold; }
+        .capture-guide { margin-top: 30px; font-size: 1em; color: #7f8c8d; background: #ecf0f1; padding: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -196,7 +207,45 @@
         
         <div class="feedback" id="feedback4"></div>
         <button class="action-btn submit-btn" onclick="checkAnswers(4)">최종 정답 확인</button>
-        <button class="action-btn next-btn" id="next4" onclick="finishQuiz()" style="background-color: #8e44ad;">🎉 88문제 퀴즈 완료!</button>
+        <button class="action-btn next-btn" id="next4" onclick="showResultScreen()" style="background-color: #8e44ad;">🏆 결과 확인하기 (제출용 화면)</button>
+    </div>
+
+    <div id="result-screen">
+        <h2>🎉 수고하셨습니다!</h2>
+        <div class="certificate-info">학생 이름: <strong><span id="resultName"></span></strong></div>
+        
+        <table class="score-table">
+            <thead>
+                <tr>
+                    <th>단계</th>
+                    <th>맞은 문제 수 / 전체 문항</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1단계 (어휘)</td>
+                    <td id="score1"></td>
+                </tr>
+                <tr>
+                    <td>2단계 (문법 1)</td>
+                    <td id="score2"></td>
+                </tr>
+                <tr>
+                    <td>3단계 (문법 2)</td>
+                    <td id="score3"></td>
+                </tr>
+                <tr>
+                    <td>4단계 (종합 심화)</td>
+                    <td id="score4"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="total-score">최종 정답 수: <span id="totalScoreText"></span> / 88</div>
+        <div class="capture-guide">
+            📸 이 화면을 캡처하여 교수님께 증빙 자료로 제출해 주세요.
+        </div>
+        <button class="action-btn start-btn" onclick="finishQuiz()" style="margin-top: 30px;">목록으로 돌아가기</button>
     </div>
 
     <script>
@@ -208,7 +257,10 @@
         const stageTimes = { 1: 900, 2: 1200, 3: 1200, 4: 1500 }; 
         let timeLeft = stageTimes[1];
 
-        // 이름 입력 및 퀴즈 시작
+        // 점수 저장 배열
+        let scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
+        const totalQsPerStage = { 1: 28, 2: 20, 3: 20, 4: 20 };
+
         function startQuiz() {
             const nameInput = document.getElementById('studentName').value.trim();
             if(nameInput === "") {
@@ -245,7 +297,6 @@
             }, 1000);
         }
 
-        // 유효성 검사 (빈칸 체크)
         function checkAnswers(stage) {
             const inputs = document.querySelectorAll(`.q${stage}-input`);
             let allAnswered = true;
@@ -264,7 +315,6 @@
             forceCheckAnswers(stage);
         }
 
-        // 채점 로직 (띄어쓰기 무시 및 복수 정답 유연하게 처리)
         function forceCheckAnswers(stage) {
             clearInterval(timerInterval); 
             let score = 0;
@@ -297,7 +347,7 @@
                     if (userAnswer.includes("모르겠습니다")) isCorrect = true;
                     if (userAnswer.includes("하지만은")) isCorrect = true;
                     if (userAnswer.includes("하기는하지만")) isCorrect = true;
-                    if (userAnswer.includes("긴하지만")) isCorrect = true; // 축약형 허용
+                    if (userAnswer.includes("긴하지만")) isCorrect = true;
                 }
 
                 if (isCorrect) {
@@ -310,6 +360,9 @@
                     answerDisplays[index].style.display = 'block';
                 }
             });
+
+            // 점수 저장
+            scores[stage] = score;
 
             const totalQs = inputs.length;
             const fb = document.getElementById(`feedback${stage}`);
@@ -335,6 +388,22 @@
             timeLeft = stageTimes[next];
             startTimer();
             window.scrollTo(0, 0);
+        }
+
+        // 최종 결과 화면 표시 (제출용)
+        function showResultScreen() {
+            document.getElementById('stage4').style.display = 'none';
+            document.getElementById('infoBox').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            
+            document.getElementById('resultName').innerText = studentName;
+            document.getElementById('score1').innerText = `${scores[1]} / ${totalQsPerStage[1]}`;
+            document.getElementById('score2').innerText = `${scores[2]} / ${totalQsPerStage[2]}`;
+            document.getElementById('score3').innerText = `${scores[3]} / ${totalQsPerStage[3]}`;
+            document.getElementById('score4').innerText = `${scores[4]} / ${totalQsPerStage[4]}`;
+            
+            const totalScore = scores[1] + scores[2] + scores[3] + scores[4];
+            document.getElementById('totalScoreText').innerText = totalScore;
         }
 
         function finishQuiz() {
