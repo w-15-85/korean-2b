@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ko" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서울대 한국어 2B - 13과 연습 (40문제 심화)</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: 0 auto; background-color: #f4f6f8; }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .info-box { background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #3498db; display: none; }
+        .timer { color: #e74c3c; font-size: 1.3em; font-weight: bold; }
+        
+        /* 시작 화면 (이름 입력) */
+        #start-screen { background: white; padding: 40px; border-radius: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 50px; }
+        #start-screen input[type="text"] { width: 60%; padding: 12px; font-size: 1.2em; border: 2px solid #3498db; border-radius: 8px; margin-bottom: 20px; text-align: center; }
+        
+        .stage-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: none; }
+        .stage-title { color: #fff; background-color: #2c3e50; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 1.2em; text-align: center;}
+        
+        /* 문법 참고 박스 */
+        .grammar-box { background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 5px; color: #856404; }
+        .grammar-box h3 { margin: 0 0 10px 0; font-size: 1.1em; color: #664d03; }
+        .grammar-box ul { margin: 0; padding-left: 20px; font-weight: normal; }
+        .grammar-box li { margin-bottom: 5px; }
+
+        .question-item { margin-bottom: 20px; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 15px; }
+        .question-item:last-child { border-bottom: none; }
+        .dialogue { background: #f1f2f6; padding: 15px; border-radius: 5px; }
+        input[type="text"] { border: 1px solid #bdc3c7; border-radius: 4px; padding: 8px; font-size: 1em; width: 220px; font-weight: bold; color: #2c3e50; }
+        .action-btn { display: block; width: 100%; padding: 15px; color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; margin-top: 20px; font-weight: bold; }
+        .submit-btn { background: #27ae60; }
+        .submit-btn:hover { background: #2ecc71; }
+        .next-btn { background: #e67e22; display: none; }
+        .next-btn:hover { background: #d35400; }
+        .start-btn { background: #3498db; width: auto; padding: 15px 40px; margin: 0 auto; }
+        .start-btn:hover { background: #2980b9; }
+        
+        .correct-answer { color: #e74c3c; font-size: 0.9em; display: none; margin-top: 5px; font-weight: bold; }
+        .feedback { text-align: center; font-size: 1.2em; font-weight: bold; color: #2980b9; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>📝 13과: 주거와 생활 (40문제 심화 버전)</h1>
+    
+    <div id="start-screen">
+        <h2>환영합니다! 이름을 먼저 입력해 주세요.</h2>
+        <p>이름을 입력해야 총 4단계(50분) 퀴즈를 시작할 수 있습니다.</p>
+        <input type="text" id="studentName" placeholder="이름 입력 (예: 마이클)">
+        <button class="action-btn start-btn" onclick="startQuiz()">🚀 퀴즈 시작하기</button>
+    </div>
+
+    <div class="info-box" id="infoBox">
+        <div id="stageIndicator">학생: <span id="displayName"></span> | 1단계 (어휘)</div>
+        <div class="timer" id="timerDisplay">남은 시간: 10:00</div>
+    </div>
+
+    <div id="stage1" class="stage-container">
+        <div class="stage-title">🌱 1단계: 주거와 생활비 어휘 (10분)</div>
+        
+        <div class="grammar-box">
+            <h3>📌 [참고] 알맞은 어휘를 쓰세요</h3>
+            <ul>
+                <li><strong>집 종류</strong>: 기숙사, 하숙집, 원룸, 자취방 등</li>
+                <li><strong>비용/구조</strong>: 집세, 보증금, 관리비, 식비, 교통비, 현관, 거실, 베란다 등</li>
+            </ul>
+        </div>
+        
+        <div class="question-item"><div class="dialogue">1. 학교 안에 있어서 학생들이 생활하기 좋은 집은 <input type="text" class="q1-input" data-answer="기숙사">입니다.</div><div class="correct-answer">정답: 기숙사</div></div>
+        <div class="question-item"><div class="dialogue">2. 방을 빌리기 위해 매달 집주인에게 내는 돈은 <input type="text" class="q1-input" data-answer="집세">입니다.</div><div class="correct-answer">정답: 집세 (또는 월세)</div></div>
+        <div class="question-item"><div class="dialogue">3. 아파트의 청소나 엘리베이터 유지를 위해 매달 내는 돈은 <input type="text" class="q1-input" data-answer="관리비">입니다.</div><div class="correct-answer">정답: 관리비</div></div>
+        <div class="question-item"><div class="dialogue">4. 밖에서 들어올 때 신발을 벗어두는 곳은 <input type="text" class="q1-input" data-answer="현관">입니다.</div><div class="correct-answer">정답: 현관</div></div>
+        <div class="question-item"><div class="dialogue">5. 매일 밖에서 밥을 사 먹으면 <input type="text" class="q1-input" data-answer="식비">이/가 많이 나옵니다. [음식에 쓰는 돈]</div><div class="correct-answer">정답: 식비</div></div>
+        <div class="question-item"><div class="dialogue">6. 학교가 멀어서 버스와 지하철을 매일 타면 <input type="text" class="q1-input" data-answer="교통비">이/가 많이 듭니다.</div><div class="correct-answer">정답: 교통비</div></div>
+        <div class="question-item"><div class="dialogue">7. 여름에 에어컨을 많이 틀면 <input type="text" class="q1-input" data-answer="전기요금">이/가 많이 나옵니다.</div><div class="correct-answer">정답: 전기 요금 (또는 전기세)</div></div>
+        <div class="question-item"><div class="dialogue">8. 가족들이 밥을 먹고 TV를 보며 함께 모이는 큰 방은 <input type="text" class="q1-input" data-answer="거실">입니다.</div><div class="correct-answer">정답: 거실</div></div>
+        <div class="question-item"><div class="dialogue">9. 불을 사용해서 요리를 하는 곳은 <input type="text" class="q1-input" data-answer="부엌">입니다.</div><div class="correct-answer">정답: 부엌</div></div>
+        <div class="question-item"><div class="dialogue">10. 세수를 하거나 샤워를 하는 곳은 <input type="text" class="q1-input" data-answer="화장실">입니다.</div><div class="correct-answer">정답: 화장실 (또는 욕실)</div></div>
+        
+        <div class="feedback" id="feedback1"></div>
+        <button class="action-btn submit-btn" onclick="checkAnswers(1)">1단계 정답 확인</button>
+        <button class="action-btn next-btn" id="next1" onclick="nextStage(2)">2단계로 이동하기 ➔</button>
+    </div>
+
+    <div id="stage2" class="stage-container">
+        <div class="stage-title">🌿 2단계: 문법 집중 연습 [A/V-(으)ㄹ지 모르겠다] (12분)</div>
+        <p>※ 괄호 안의 기본형을 <strong>-(으)ㄹ지 모르겠다</strong> 형태로 바꾸어 대화를 완성하세요.</p>
+        
+        <div class="question-item"><div class="dialogue">1. 하늘이 어두워요. 비가 <input type="text" class="q2-input" data-answer="올지 모르겠어요">. [오다]</div><div class="correct-answer">정답: 올지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">2. 가: 이 옷을 입어 보세요.<br>나: 저한테 <input type="text" class="q2-input" data-answer="맞을지 모르겠어요">. [맞다]</div><div class="correct-answer">정답: 맞을지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">3. 내일 여행을 가는데 날씨가 <input type="text" class="q2-input" data-answer="좋을지 모르겠어요">. [좋다]</div><div class="correct-answer">정답: 좋을지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">4. 이 선물을 친구가 <input type="text" class="q2-input" data-answer="좋아할지 모르겠어요">. [좋아하다]</div><div class="correct-answer">정답: 좋아할지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">5. 오늘 파티에 누가 <input type="text" class="q2-input" data-answer="올지 모르겠어요">. [오다]</div><div class="correct-answer">정답: 올지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">6. 새로 산 구두가 발에 <input type="text" class="q2-input" data-answer="편할지 모르겠어요">. [편하다]</div><div class="correct-answer">정답: 편할지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">7. 회의가 언제 <input type="text" class="q2-input" data-answer="끝날지 모르겠어요">. [끝나다]</div><div class="correct-answer">정답: 끝날지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">8. 일이 많아서 내일 모임에 <input type="text" class="q2-input" data-answer="갈 수 있을지 모르겠어요">. [갈 수 있다]</div><div class="correct-answer">정답: 갈 수 있을지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">9. 방학에 여행을 가고 싶은데 어디에 <input type="text" class="q2-input" data-answer="갈지 모르겠어요">. [가다]</div><div class="correct-answer">정답: 갈지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">10. 공부를 많이 못 해서 이번 시험이 <input type="text" class="q2-input" data-answer="어려울지 모르겠어요">. [어렵다]</div><div class="correct-answer">정답: 어려울지 모르겠어요</div></div>
+        
+        <div class="feedback" id="feedback2"></div>
+        <button class="action-btn submit-btn" onclick="checkAnswers(2)">2단계 정답 확인</button>
+        <button class="action-btn next-btn" id="next2" onclick="nextStage(3)">3단계로 이동하기 ➔</button>
+    </div>
+
+    <div id="stage3" class="stage-container">
+        <div class="stage-title">🌳 3단계: 문법 집중 연습 [A/V-기는 하지만] (13분)</div>
+        <p>※ 괄호 안의 기본형을 <strong>-기는 하지만</strong> 형태로 바꾸어 대화를 완성하세요.</p>
+        
+        <div class="question-item"><div class="dialogue">1. 한국어가 <input type="text" class="q3-input" data-answer="어렵기는 하지만"> 정말 재미있어요. [어렵다]</div><div class="correct-answer">정답: 어렵기는 하지만</div></div>
+        <div class="question-item"><div class="dialogue">2. 제 방이 <input type="text" class="q3-input" data-answer="작기는 하지만"> 혼자 살기에는 괜찮아요. [작다]</div><div class="correct-answer">정답: 작기는 하지만</div></div>
+        <div class="question-item"><div class="dialogue">3. 떡볶이가 <input type="text" class="q3-input" data-answer="맵기는 하지만"> 아주 맛있어요. [맵다]</div><div class="correct-answer">정답: 맵기는 하지만</div></div>
+        <div class="question-item"><div class="dialogue">4. 이 집이 학교에서 <input type="text" class="q3-input" data-answer="가깝기는 하지만"> 차가 많아서 시끄러워요. [가깝다]</div><div class="correct-answer">정답: 가깝기는 하지만</div></div>
+        <div class="question-item"><div class="dialogue">5. 새로 이사한 곳이 학교에서 좀 <input type="text" class="q3-input" data-answer="멀기는 하지만"> 방이 넓어요. [멀다]</div><div class="correct-answer">정답: 멀기는 하지만</div></div>
+        <div class="question-item"><div class="dialogue">6. 룸메이트와 성격이 <input type="text" class="q3-input" data-answer="다르기는 하지만"> 서로 잘 이해해 줘요. [다르다]</div><div class="correct-answer">정답: 다르기는 하지만</div></div>
+        <div class="question-item"><div class="dialogue">7. 이 옷이 예쁘고 <input type="text" class="q3-input" data-answer="싸기는 하지만"> 질이 별로 안 좋아요. [싸다]</div><div class="correct-answer">정답: 싸기는 하지만</div></div>
+        <div class="question-item"><div class="dialogue">8. 저 집은 창문 밖의 전망이 <input type="text" class="q3-input" data-answer="좋기는 하지만"> 역에서 너무 멀어요. [좋다]</div><div class="correct-answer">정답: 좋기는 하지만</div></div>
+        <div class="question-item"><div class="dialogue">9. 불고기가 <input type="text" class="q3-input" data-answer="맛있기는 하지만"> 고기라서 조금 비싸요. [맛있다]</div><div class="correct-answer">정답: 맛있기는 하지만</div></div>
+        <div class="question-item"><div class="dialogue">10. 요즘 숙제가 <input type="text" class="q3-input" data-answer="많기는 하지만"> 한국어 실력이 늘고 있어요. [많다]</div><div class="correct-answer">정답: 많기는 하지만</div></div>
+        
+        <div class="feedback" id="feedback3"></div>
+        <button class="action-btn submit-btn" onclick="checkAnswers(3)">3단계 정답 확인</button>
+        <button class="action-btn next-btn" id="next3" onclick="nextStage(4)">4단계(심화)로 이동하기 ➔</button>
+    </div>
+
+    <div id="stage4" class="stage-container">
+        <div class="stage-title">🔥 4단계: 종합 응용 심화 (15분)</div>
+        <p>※ 어휘와 두 가지 문법을 모두 활용하여 대화를 완성하세요.</p>
+        
+        <div class="question-item"><div class="dialogue">1. 가: 월세가 싸네요!<br>나: 네, <input type="text" class="q4-input" data-answer="보증금">이/가 1,000만 원으로 조금 비싸기는 하지만 월세가 싸서 좋아요. [집을 빌릴 때 처음에 맡기는 큰 돈]</div><div class="correct-answer">정답: 보증금</div></div>
+        <div class="question-item"><div class="dialogue">2. 가: 혼자 살 집을 찾고 있어요.<br>나: 그럼 방 하나에 부엌과 화장실이 같이 있는 <input type="text" class="q4-input" data-answer="원룸">은/는 어때요? [방 한 개짜리 집]</div><div class="correct-answer">정답: 원룸</div></div>
+        <div class="question-item"><div class="dialogue">3. 가: 식비를 절약하고 싶어요.<br>나: 그럼 아주머니가 밥을 챙겨주시는 <input type="text" class="q4-input" data-answer="하숙집">에 들어가세요. [주인이 밥을 해주는 집]</div><div class="correct-answer">정답: 하숙집</div></div>
+        <div class="question-item"><div class="dialogue">4. 가: 겨울에 집이 따뜻해요?<br>나: 네, 따뜻해요. 그런데 난방을 많이 해서 <input type="text" class="q4-input" data-answer="가스요금">이/가 많이 나올지 모르겠어요. [가스 사용료]</div><div class="correct-answer">정답: 가스 요금 (또는 가스비)</div></div>
+        <div class="question-item"><div class="dialogue">5. 가: 요즘 물가가 너무 올랐죠?<br>나: 맞아요, 한 달 동안 쓰는 전체 <input type="text" class="q4-input" data-answer="생활비">이/가 작년보다 훨씬 많이 들어요. [생활하는 데 쓰는 돈]</div><div class="correct-answer">정답: 생활비</div></div>
+        <div class="question-item"><div class="dialogue">6. 가: 요즘 바빠요?<br>나: 네, 숙제가 많아서 <input type="text" class="q4-input" data-answer="바쁘기는 하지만"> 매일 운동은 꼭 해요. [바쁘다 + 기는 하지만]</div><div class="correct-answer">정답: 바쁘기는 하지만</div></div>
+        <div class="question-item"><div class="dialogue">7. 가: 방학 때 고향에 갈 거예요?<br>나: 가고 싶은데 비행기 표가 너무 <input type="text" class="q4-input" data-answer="비쌀지 모르겠어요">. [비싸다 + (으)ㄹ지 모르겠다]</div><div class="correct-answer">정답: 비쌀지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">8. 가: 내일도 많이 춥대요.<br>나: 얇은 외투를 입으면 <input type="text" class="q4-input" data-answer="추울지 모르겠어요">. 두꺼운 옷을 입으세요. [춥다 + (으)ㄹ지 모르겠다]</div><div class="correct-answer">정답: 추울지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">9. 가: 일이 많아서 주말에 쉬지 못했어요.<br>나: 그럼 월요일 아침에 아주 <input type="text" class="q4-input" data-answer="피곤할지 모르겠어요">. 무리하지 마세요. [피곤하다 + (으)ㄹ지 모르겠다]</div><div class="correct-answer">정답: 피곤할지 모르겠어요</div></div>
+        <div class="question-item"><div class="dialogue">10. 가: 새로 구한 집은 어때요?<br>나: 거실이 아주 <input type="text" class="q4-input" data-answer="넓기는 하지만"> 해가 잘 안 들어와서 조금 어두워요. [넓다 + 기는 하지만]</div><div class="correct-answer">정답: 넓기는 하지만</div></div>
+        
+        <div class="feedback" id="feedback4"></div>
+        <button class="action-btn submit-btn" onclick="checkAnswers(4)">최종 정답 확인</button>
+        <button class="action-btn next-btn" id="next4" onclick="finishQuiz()" style="background-color: #8e44ad;">🎉 50분(40문제) 퀴즈 완료</button>
+    </div>
+
+    <script>
+        let currentStage = 1;
+        let timerInterval;
+        let studentName = "";
+        
+        // 4단계별 배정 시간 (초 단위: 10분, 12분, 13분, 15분) = 총 50분
+        const stageTimes = { 1: 600, 2: 720, 3: 780, 4: 900 }; 
+        let timeLeft = stageTimes[1];
+
+        // 이름 입력 및 퀴즈 시작
+        function startQuiz() {
+            const nameInput = document.getElementById('studentName').value.trim();
+            if(nameInput === "") {
+                alert("⚠️ 이름을 반드시 입력해 주세요!");
+                return;
+            }
+            studentName = nameInput;
+            document.getElementById('displayName').innerText = studentName;
+            
+            // 화면 전환
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('infoBox').style.display = 'flex';
+            document.getElementById('stage1').style.display = 'block';
+            
+            startTimer();
+        }
+
+        function updateTimerDisplay() {
+            let m = Math.floor(timeLeft / 60);
+            let s = timeLeft % 60;
+            document.getElementById('timerDisplay').innerText = `남은 시간: ${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert(`시간이 초과되었습니다! 자동으로 ${currentStage}단계 채점을 진행합니다.`);
+                    forceCheckAnswers(currentStage);
+                }
+            }, 1000);
+        }
+
+        function checkAnswers(stage) {
+            const inputs = document.querySelectorAll(`.q${stage}-input`);
+            let allAnswered = true;
+
+            inputs.forEach((input) => {
+                if (input.value.trim() === "") {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                alert(`⚠️ ${studentName} 학생, 꼼꼼히 확인해 주세요!\n${stage}단계의 10개 빈칸에 답을 모두 입력해야 정답을 확인할 수 있습니다.`);
+                return; 
+            }
+
+            forceCheckAnswers(stage);
+        }
+
+        function forceCheckAnswers(stage) {
+            clearInterval(timerInterval); 
+            let score = 0;
+            const inputs = document.querySelectorAll(`.q${stage}-input`);
+            const answerDisplays = document.querySelectorAll(`#stage${stage} .correct-answer`);
+            
+            inputs.forEach((input, index) => {
+                input.disabled = true; 
+                let userAnswer = input.value.replace(/\s+/g, '').trim(); 
+                let correctAnswer = input.getAttribute('data-answer').replace(/\s+/g, '').trim();
+                
+                let isCorrect = (userAnswer === correctAnswer);
+                
+                // 복수 정답 허용 로직
+                if (stage === 1) {
+                    if (index === 1 && userAnswer === "월세") isCorrect = true;
+                    if (index === 6 && userAnswer === "전기세") isCorrect = true;
+                    if (index === 9 && userAnswer === "욕실") isCorrect = true;
+                }
+                if (stage === 2) {
+                    if (userAnswer.includes("모르겠습니다")) isCorrect = true; // 습니다 허용
+                }
+                if (stage === 4) {
+                    if (index === 3 && userAnswer === "가스비") isCorrect = true;
+                    if (userAnswer.includes("모르겠습니다")) isCorrect = true;
+                }
+
+                if (isCorrect) {
+                    score++;
+                    input.style.backgroundColor = '#d4edda';
+                    input.style.borderColor = '#28a745';
+                } else {
+                    input.style.backgroundColor = '#f8d7da';
+                    input.style.borderColor = '#dc3545';
+                    answerDisplays[index].style.display = 'block';
+                }
+            });
+
+            const fb = document.getElementById(`feedback${stage}`);
+            fb.innerText = `[${studentName} 학생 결과] 10문제 중 ${score}문제 정답!`;
+            fb.style.display = 'block';
+            
+            document.querySelector(`#stage${stage} .submit-btn`).style.display = 'none';
+            document.getElementById(`next${stage}`).style.display = 'block';
+        }
+
+        function nextStage(next) {
+            document.getElementById(`stage${currentStage}`).style.display = 'none';
+            currentStage = next;
+            document.getElementById(`stage${currentStage}`).style.display = 'block';
+            
+            let stageName = "";
+            if(next === 2) stageName = "2단계 (문법 1)";
+            if(next === 3) stageName = "3단계 (문법 2)";
+            if(next === 4) stageName = "4단계 (종합 심화)";
+            
+            document.getElementById('stageIndicator').innerText = `학생: ${studentName} | ${stageName}`;
+            
+            timeLeft = stageTimes[next];
+            startTimer();
+            window.scrollTo(0, 0);
+        }
+
+        function finishQuiz() {
+            window.location.href = "index.html"; 
+        }
+    </script>
+</body>
+</html>
